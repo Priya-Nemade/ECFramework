@@ -2,6 +2,7 @@ package Keywords;
 
 
 import java.io.FileInputStream;
+import java.util.List;
 import java.util.Properties;
 
 import org.openqa.selenium.Alert;
@@ -14,5 +15,5 @@ public class Constants {
 	public static FileInputStream fis;
 	public static Properties prop;
 	public static Alert alert;
-	
+	public static List<WebElement> elements;
 }

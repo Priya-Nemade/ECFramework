@@ -2,16 +2,16 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="34195" started-at="2020-01-30T15:13:58Z" finished-at="2020-01-30T15:14:32Z">
+  <suite name="Suite" duration-ms="42" started-at="2020-02-19T13:26:29Z" finished-at="2020-02-19T13:26:29Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="34195" started-at="2020-01-30T15:13:58Z" finished-at="2020-01-30T15:14:32Z">
+    <test name="Test" duration-ms="42" started-at="2020-02-19T13:26:29Z" finished-at="2020-02-19T13:26:29Z">
       <class name="TestCases.SignIn">
-        <test-method status="PASS" signature="tc_01()[pri:0, instance:TestCases.SignIn@6fc6f14e]" name="tc_01" duration-ms="34169" started-at="2020-01-30T20:43:58Z" finished-at="2020-01-30T20:44:32Z">
+        <test-method status="PASS" signature="tc_01()[pri:0, instance:TestCases.SignIn@45dd4eda]" name="tc_01" duration-ms="20" started-at="2020-02-19T18:56:29Z" finished-at="2020-02-19T18:56:29Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tc_01 -->
       </class> <!-- TestCases.SignIn -->
-    </test> <!-- Default test -->
-  </suite> <!-- Default suite -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
 </testng-results>

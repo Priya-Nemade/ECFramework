@@ -7,6 +7,13 @@
 package Keywords;
 
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -29,17 +36,17 @@ public class Keyword {
 	public static void openBrowser(String browserName) {
 		switch (browserName) {
 		case "Chrome":
-			System.out.println("Chrome browser opemimg");
+			System.out.println("Chrome browser opening");
 			WebDriverManager.chromedriver().setup();
 			Constants.driver = new ChromeDriver();
 			break;
 		case "Firefox":
-			System.out.println("Firefox browser opemimg");
+			System.out.println("Firefox browser opening");
 			WebDriverManager.firefoxdriver().setup();
 			Constants.driver = new FirefoxDriver();
 			break;
 		case "IE":
-			System.out.println("InternetExplorer browser opemimg");
+			System.out.println("InternetExplorer browser opening");
 			WebDriverManager.iedriver().setup();
 			Constants.driver = new InternetExplorerDriver();
 			break;
@@ -110,10 +117,43 @@ public class Keyword {
 			break;
 		default:
 			System.out.println("Invalid locator Type Name " + locatorType
-					+ " Expected: XPATH, CSS, ID, CLASS, LINK_TEXT, PARTIAL_LINK_TEXT,TAG_NAME.");
+					+ " Expected: XPATH, CSS, ID, NAME, CLASS, LINK_TEXT, PARTIAL_LINK_TEXT,TAG_NAME.");
 			break;
 		}
 		return Constants.element;
+	}
+	public static List<WebElement> getWebElements(String locatorType, String locatorValue) {
+		switch (locatorType) {
+		case "XPATH":
+			Constants.elements = Constants.driver.findElements(By.xpath(locatorValue));
+			break;
+		case "CSS":
+			Constants.elements = Constants.driver.findElements(By.cssSelector(locatorValue));
+			break;
+		case "ID":
+			Constants.elements = Constants.driver.findElements(By.id(locatorValue));
+			break;
+		case "NAME":
+			Constants.elements = Constants.driver.findElements(By.name(locatorValue));
+			break;
+		case "CLASS":
+			Constants.elements = Constants.driver.findElements(By.className(locatorValue));
+			break;
+		case "LINK_TEXT":
+			Constants.elements = Constants.driver.findElements(By.linkText(locatorValue));
+			break;
+		case "PARTIAL_LINK_TEXT":
+			Constants.elements = Constants.driver.findElements(By.partialLinkText(locatorValue));
+			break;
+		case "TAG_NAME":
+			Constants.elements = Constants.driver.findElements(By.tagName(locatorValue));
+			break;
+		default:
+			System.out.println("Invalid locator Type Name " + locatorType
+					+ " Expected: XPATH, CSS, ID, NAME, CLASS, LINK_TEXT, PARTIAL_LINK_TEXT,TAG_NAME.");
+			break;
+		}
+		return Constants.elements;
 	}
 
 	/**
@@ -176,6 +216,48 @@ public class Keyword {
 
 	public static void toMaximizeWindow() {
 		Constants.driver.manage().window().maximize();
+	}
+	public static void verifyBreakDownLinks() {
+		int respcode=200;
+		String mainUrl=Constants.driver.getCurrentUrl();
+		String href="";
+		HttpURLConnection connection=null;
+		
+		List<WebElement> elements = getWebElements("TAG_NAME", "a");
+		System.out.println("Total No. of broken links are: "+elements.size());
+	    Iterator<WebElement> itr=elements.iterator();
+		while (itr.hasNext()) {
+			WebElement elementlink = (WebElement) itr.next();
+			href=elementlink.getAttribute("href");
+			System.out.println(href);
+		
+			if (href==null || href.isEmpty()) {
+			 System.out.println("URL is either not configured for anchor tag or it is empty");
+			 continue;
+		}
+			if (!href.startsWith(mainUrl)) {
+				System.out.println("url belongs to another domain, skipping it");
+				continue;
+			}
+			try {
+				connection=(HttpURLConnection)(new URL(href).openConnection());
+				connection.setRequestMethod("HEAD");
+				connection.connect();
+				 respcode=connection.getResponseCode();
+				if (respcode >=400) {
+					System.out.println(href + "  link is broken");
+				} else {
+	           System.out.println(href+" Link not broken");
+				}
+			} catch (MalformedURLException e) {
+				
+				e.printStackTrace();
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+			
+		}
 	}
 
 }
